@@ -16,7 +16,7 @@ int		ft_printf(const char *format, ...);
 
 int		main(void)
 {
-	printf("%10.3f\n", 12.123);
-	ft_printf("%-+20.3ls\n");
+	// printf("%10.3f\n", 12.123);
+	ft_printf("%+-020.20lls ghbad ");
 	return (0);
 }

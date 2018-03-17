@@ -10,10 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
+CC = clang
 FLAGS = -Wextra -Wall -Werror
-SRC = main.c ft_printf.c
-OBJ = main.o ft_printf.o
+SRC = main.c ft_printf.c parse_percent.c parse_format.c
+OBJ = main.o ft_printf.o parse_percent.o parse_format.o
 NAME = test
 
 %.o:%.c
