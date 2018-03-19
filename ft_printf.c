@@ -15,9 +15,48 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static void			processing_format(t_print *list, va_list arg)
+static int			processing_format_part1(t_print *list, va_list *arg)
 {
-	
+	if (list->type == '%')
+		processing_percent(list, arg);
+	else if (list->type == 's')
+		processing_string(list, arg);
+	else if (list->type == 'S')
+		processing_string(list, arg);
+	else if (list->type == 'p')
+		processing_pointer(list, arg);
+	else if (list->type == 'd')
+		processing_integer(list, arg);
+	else if (list->type == 'D')
+		processing_integer(list, arg);
+	else if (list->type == 'i')
+		processing_integer(list, arg);
+	else if (list->type == 'o')
+		processing_octal(list, arg);
+	else if (list->type == 'O')
+		processing_octal(list, arg);
+	else
+		return (0);
+	return (1);
+}
+
+static int			processing_format_part2(t_print *list, va_list *arg)
+{
+	if (list->type == 'u')
+		processing_unsigned(list, arg);
+	else if (list->type == 'U')
+		processing_unsigned(list, arg);
+	else if (list->type == 'x')
+		processing_hex(list, arg);
+	else if (list->type == 'X')
+		processing_hex(list, arg);
+	else if (list->type == 'c')
+		processing_char(list, arg);
+	else if (list->type == 'C')
+		processing_char(list, arg);
+	else
+		return (0);
+	return (1);
 }
 
 static ssize_t		parse_and_print(char *format, va_list arg)
@@ -43,7 +82,9 @@ static ssize_t		parse_and_print(char *format, va_list arg)
 		printf("out:\"%s\"\n", temp->out);
 		printf("-------------------\n");
 		if (temp->type)
-			processing_format(temp, arg);
+			if (!processing_format(temp, &arg))
+				processing_format_part2(temp, &arg);
+
 		temp = temp->next;
 	}
 	return (1);

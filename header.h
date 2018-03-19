@@ -12,7 +12,7 @@
 
 #ifndef HEADER_H
 # define HEADER_H
-# define TYPES	"sSpdDioOuUxXcC"
+# define TYPES	"sSpdDioOuUxXcC%"
 # define FLAGS	"#0-+ "
 # define MODS	"hljz"
 # include "libft/libft.h"
@@ -37,5 +37,6 @@ typedef struct 		s_print
 void			parse_percent(char **str, t_print *list);
 int				contains(char *str, char c);
 t_print			*parse_format(char *format);
+int				valid(char *format);
 
 #endif

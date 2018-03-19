@@ -12,8 +12,8 @@
 
 CC = clang
 FLAGS = -Wextra -Wall -Werror
-SRC = main.c ft_printf.c parse_percent.c parse_format.c
-OBJ = main.o ft_printf.o parse_percent.o parse_format.o
+SRC = main.c ft_printf.c parse_percent.c parse_format.c valid.c
+OBJ = main.o ft_printf.o parse_percent.o parse_format.o valid.o
 NAME = test
 
 %.o:%.c
