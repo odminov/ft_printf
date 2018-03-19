@@ -72,22 +72,29 @@ static int			copytolist(char **str, t_print *list)
 		ft_strncpy(list->out, *str, i);
 		list->out[i] = '\0';
 	}
-	*str += i + 1;
-	return (i);
+	if (contains(*str, '%'))
+	{
+		(*str) += i + 1;
+		return (1);
+	}
+	else
+	 	(*str)+= i;
+	return (0);
 }
 
 t_print		*parse_format(char *format)
 {
 	t_print 	*new;
 	t_print		*head;
+	int			res;
 
 	new = init_list();
 	head = new;
 	while (*format)
 	{
-		if ((copytolist(&format, new)) == -1)
+		if ((res = copytolist(&format, new)) == -1)
 			return (NULL);
-		if (contains(format, '%'))
+		if (res)
 		{
 			new->next = init_list();
 			new = new->next;

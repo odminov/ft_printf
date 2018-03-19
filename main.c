@@ -15,8 +15,10 @@
 int		ft_printf(const char *format, ...);
 
 int		main(void)
-{
-	// printf("%10.3f\n", 12.123);
-	ft_printf("%+-020.20lls ghbad ");
+{	int i;
+	// printf("%+-20.20i%", 24);
+	// i = ft_printf("string: %s, digit: %d, and another simbols, and %% and %+-20.50lld");
+	i = ft_printf("%+-020.ll%");
+	printf("%i\n", i);
 	return (0);
 }

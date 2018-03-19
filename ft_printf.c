@@ -11,13 +11,16 @@
 /* ************************************************************************** */
 
 #include "header.h"
-#include "libft/libft.h"
-#include <stdlib.h>
 #include <stdarg.h>
 #include <unistd.h>
 #include <stdio.h>
 
-static ssize_t		parse_and_print(char *format)
+static void			processing_format(t_print *list, va_list arg)
+{
+	
+}
+
+static ssize_t		parse_and_print(char *format, va_list arg)
 {
 	t_print		*list;
 	t_print		*temp;
@@ -39,6 +42,8 @@ static ssize_t		parse_and_print(char *format)
 		printf("type:\"%c\"\n", temp->type);
 		printf("out:\"%s\"\n", temp->out);
 		printf("-------------------\n");
+		if (temp->type)
+			processing_format(temp, arg);
 		temp = temp->next;
 	}
 	return (1);
@@ -46,7 +51,7 @@ static ssize_t		parse_and_print(char *format)
 
 int			ft_printf(const char *format, ...)
 {
-	// va_list	arg;
+	va_list	arg;
 	ssize_t	out;
 
 	out = 0;
@@ -57,9 +62,11 @@ int			ft_printf(const char *format, ...)
 	}
 	else
 	{
-		//va_start(arg, format);
-		out = parse_and_print((char *)format);
-		//va_end(arg);
+		if (!valid((char *)format))
+			return (-1);
+		va_start(arg, format);
+		out = parse_and_print((char *)format, arg);
+		va_end(arg);
 		return ((int)out);
 	}
 }
