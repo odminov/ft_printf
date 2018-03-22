@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ahonchar <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/16 13:24:05 by ahonchar          #+#    #+#              #
-#    Updated: 2018/03/16 13:24:05 by ahonchar         ###   ########.fr        #
+#    Updated: 2018/03/22 14:16:50 by ahonchar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = clang
 FLAGS = -Wextra -Wall -Werror
-SRC = main.c ft_printf.c parse_percent.c parse_format.c valid.c
-OBJ = main.o ft_printf.o parse_percent.o parse_format.o valid.o
+SRC = main.c ft_printf.c parse_percent.c parse_format.c valid.c proc_str_chars.c
+OBJ = main.o ft_printf.o parse_percent.o parse_format.o valid.o proc_str_chars.o
 NAME = test
 
 %.o:%.c
