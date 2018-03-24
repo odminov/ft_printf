@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_percent.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahonchar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/18 01:23:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/18 01:23:24 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/24 10:44:12 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static void		parse_pecision(t_print *list, char **str)
 	char	precision[11];
 	int		i;
 
+	list->set_precision = 1;
 	++(*str);
 	i = 0;
 	while ((**str) && (**str == '0'))

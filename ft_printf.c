@@ -6,13 +6,13 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 11:39:01 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/22 18:24:36 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/24 16:03:18 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include <unistd.h>
-#include <stdio.h>
+#include <stdio.h> //delete <-------------------------------------------------
 
 // static int			processing_format_part1(t_print *list, va_list *arg)
 // {
@@ -59,6 +59,18 @@
 // 	return (1);
 // }
 
+static int	my_ret(t_print *list, int ret)
+{
+	while (list)
+	{
+		if (list->out)
+			free(list->out);
+		free(list);
+		list = list->next;
+	}
+	return (ret);
+}
+
 static ssize_t		parse_and_print(char *format, va_list arg)
 {
 	t_print		*list;
@@ -72,17 +84,17 @@ static ssize_t		parse_and_print(char *format, va_list arg)
 		if (temp->type == 's')
 		{
 			if (processing_string(temp, arg, format) < 0)
-				return (-1);
+				return (my_ret(list, -1));
 		}
 		else if (temp->type == 'd')
 		{
 			if (processing_integer(temp, arg) < 0)
-				return (-1);
+				return (my_ret(list, -1));
 		}
 		else if (temp->type == 'c')
 		{
 			if (processing_char(temp, arg) < 0)
-				return (-1);
+				return (my_ret(list, -1));
 		}
 		else
 			;
@@ -104,7 +116,7 @@ static ssize_t		parse_and_print(char *format, va_list arg)
 		
 		temp = temp->next;
 	}
-	return (1);
+	return (my_ret(list, 4));
 }
 
 int			ft_printf(const char *format, ...)

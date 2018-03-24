@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:35:49 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/22 16:56:50 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/24 10:42:37 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct 		s_print
 	_Bool			zero;
 	int				width;
 	int				precision;
+	_Bool			set_precision;
 	char			typemod;
 	_Bool			doublemod;
 	char			type;
@@ -42,5 +43,6 @@ int				valid(char *format);
 int				processing_string(t_print *list, va_list arg, char *format);
 int				processing_integer(t_print *list, va_list arg);
 int				processing_char(t_print *list, va_list arg);
+char			*proc_width(t_print *list, char *src, int len, char c);
 
 #endif

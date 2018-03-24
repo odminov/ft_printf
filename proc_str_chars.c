@@ -6,14 +6,13 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/22 18:28:00 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/24 13:57:57 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-#include <stdio.h>
 
-static char	*proc_width(t_print *list, char *src, int len, char c)
+char		*proc_width(t_print *list, char *src, int len, char c)
 {
 	char	*out;
 	int		i;
@@ -35,7 +34,7 @@ static char	*proc_width(t_print *list, char *src, int len, char c)
 		if (i < len)
 			out[i] = src[i];
 		else
-			out[i] = c;
+			out[i] = ' ';
 		i++;
 	}
 	out[i] = '\0';
@@ -47,20 +46,16 @@ int			processing_string(t_print *list, va_list arg, char *format)
 	char	*out;
 	char	*str;
 	int		len;
-	char	c;
 
-	c = ' ';
 	str = va_arg(arg, char *);
 	if (str < format)
 		return (-1);
 	len = (int)ft_strlen(str);
-	if ((list->precision) && (list->precision < len))
+	if ((list->set_precision) && (list->precision < len))
 		len = list->precision;
 	if ((list->width) && (list->width > len))
 	{
-		if (list->zero)
-			c = '0';
-		if (!(list->out = proc_width(list, str, len, c)))
+		if (!(list->out = proc_width(list, str, len, ' ')))
 			return (-1);
 	}
 	else
@@ -83,12 +78,9 @@ int			processing_char(t_print *list, va_list arg)
 	len = 1;
 	str = ft_strnew(1);
 	str[0] = c;
-	c = ' ';
 	if ((list->width) && (list->width > len))
 	{
-		if (list->zero)
-			c = '0';
-		if (!(list->out = proc_width(list, str, len, c)))
+		if (!(list->out = proc_width(list, str, len, ' ')))
 			return (-1);
 	}
 	else
@@ -97,14 +89,6 @@ int			processing_char(t_print *list, va_list arg)
 			return (-1);
 		list->out = ft_strncpy(out, str, len);
 	}
-	return (1);
-}
-
-int			processing_integer(t_print *list, va_list arg)
-{
-	int		temp;
-
-	temp = va_arg(arg, int);
-	list->out = ft_itoa(temp);
+	free(str);
 	return (1);
 }
