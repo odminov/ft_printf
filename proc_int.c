@@ -6,22 +6,25 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/24 15:45:45 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/24 18:34:36 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-#include <stdio.h> //delete <---------------------------------------------------
 
 static char	*without_precision(t_print *list, char *out, char *prefix)
 {
 	char *res;
 	char *temp;
 
-	temp = proc_width(list, out, (int)ft_strlen(out), '0');
-	res = ft_strjoin(prefix, temp);
-	free(temp);
-	return (res);
+	if (list->width > (int)ft_strlen(out))
+	{
+		temp = proc_width(list, out, (int)ft_strlen(out), '0');
+		res = ft_strjoin(prefix, temp);
+		free(temp);
+		return (res);
+	}
+	return (out);
 }
 
 static char	*process_int_precision(t_print *list, char **out, char *prefix)

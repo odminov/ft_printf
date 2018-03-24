@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/24 13:57:57 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:46:52 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,13 @@ char		*proc_width(t_print *list, char *src, int len, char c)
 	return (out);
 }
 
-int			processing_string(t_print *list, va_list arg, char *format)
+int			processing_string(t_print *list, va_list arg)
 {
 	char	*out;
 	char	*str;
 	int		len;
 
 	str = va_arg(arg, char *);
-	if (str < format)
-		return (-1);
 	len = (int)ft_strlen(str);
 	if ((list->set_precision) && (list->precision < len))
 		len = list->precision;
@@ -75,6 +73,32 @@ int			processing_char(t_print *list, va_list arg)
 	int		len;
 
 	c = (char)va_arg(arg, unsigned);
+	len = 1;
+	str = ft_strnew(1);
+	str[0] = c;
+	if ((list->width) && (list->width > len))
+	{
+		if (!(list->out = proc_width(list, str, len, ' ')))
+			return (-1);
+	}
+	else
+	{
+		if (!(out = (char *)malloc(len + 1)))
+			return (-1);
+		list->out = ft_strncpy(out, str, len);
+	}
+	free(str);
+	return (1);
+}
+
+int			processing_percent(t_print *list)
+{
+	char	*out;
+	char	*str;
+	char	c;
+	int		len;
+
+	c = '%';
 	len = 1;
 	str = ft_strnew(1);
 	str[0] = c;
