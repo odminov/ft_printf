@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/27 16:48:00 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/27 18:54:29 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*without_precision(t_print *list, char *out, char *prefix)
 
 
 	add = 0;
-	if (list->sign || list->space || list->zero)
+	if (list->sign || list->space)
 		add = 1;
 	if (list->width > (int)ft_strlen(out) + add)
 	{
