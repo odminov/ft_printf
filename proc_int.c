@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/24 18:34:36 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/27 16:48:00 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,24 @@
 
 static char	*without_precision(t_print *list, char *out, char *prefix)
 {
-	char *res;
-	char *temp;
+	char	*temp;
+	int		add;
 
-	if (list->width > (int)ft_strlen(out))
+
+	add = 0;
+	if (list->sign || list->space || list->zero)
+		add = 1;
+	if (list->width > (int)ft_strlen(out) + add)
 	{
-		temp = proc_width(list, out, (int)ft_strlen(out), '0');
-		res = ft_strjoin(prefix, temp);
+		temp = proc_width(list, out, (int)ft_strlen(out), '0', add);
+		out = ft_strjoin(prefix, temp);
 		free(temp);
-		return (res);
+	}
+	else
+	{
+		temp = out;
+		out = ft_strjoin(prefix, out);
+		free(temp);
 	}
 	return (out);
 }
@@ -49,7 +58,7 @@ static char	*process_int_precision(t_print *list, char **out, char *prefix)
 			return (NULL);
 		free(temp);
 		if (list->width > (int)ft_strlen(*out))
-			return (proc_width(list, *out, (int)ft_strlen(*out), ' '));
+			return (proc_width(list, *out, (int)ft_strlen(*out), ' ', 0));
 		return (*out);
 	}
 	return (without_precision(list, *out, prefix));

@@ -6,20 +6,20 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/24 19:46:52 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/27 16:41:01 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-char		*proc_width(t_print *list, char *src, int len, char c)
+char		*proc_width(t_print *list, char *src, int len, char c, int add)
 {
 	char	*out;
 	int		i;
 
 	if (!(out = (char *)malloc(list->width + 1)))
 		return (NULL);
-	i = list->width - len;
+	i = list->width - len - add;
 	if (!list->align)
 	{
 		ft_memset(out, c, i);
@@ -29,7 +29,7 @@ char		*proc_width(t_print *list, char *src, int len, char c)
 		return (out);
 	}
 	i = 0;
-	while (i < list->width)
+	while (i < list->width - add)
 	{
 		if (i < len)
 			out[i] = src[i];
@@ -53,7 +53,7 @@ int			processing_string(t_print *list, va_list arg)
 		len = list->precision;
 	if ((list->width) && (list->width > len))
 	{
-		if (!(list->out = proc_width(list, str, len, ' ')))
+		if (!(list->out = proc_width(list, str, len, ' ', 0)))
 			return (-1);
 	}
 	else
@@ -78,7 +78,7 @@ int			processing_char(t_print *list, va_list arg)
 	str[0] = c;
 	if ((list->width) && (list->width > len))
 	{
-		if (!(list->out = proc_width(list, str, len, ' ')))
+		if (!(list->out = proc_width(list, str, len, ' ', 0)))
 			return (-1);
 	}
 	else
@@ -104,7 +104,7 @@ int			processing_percent(t_print *list)
 	str[0] = c;
 	if ((list->width) && (list->width > len))
 	{
-		if (!(list->out = proc_width(list, str, len, ' ')))
+		if (!(list->out = proc_width(list, str, len, ' ', 0)))
 			return (-1);
 	}
 	else
