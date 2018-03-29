@@ -6,13 +6,13 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/27 18:54:29 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/03/29 21:33:24 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-static char	*without_precision(t_print *list, char *out, char *prefix)
+static char	*int_without_precision(t_print *list, char *out, char *prefix)
 {
 	char	*temp;
 	int		add;
@@ -61,7 +61,7 @@ static char	*process_int_precision(t_print *list, char **out, char *prefix)
 			return (proc_width(list, *out, (int)ft_strlen(*out), ' ', 0));
 		return (*out);
 	}
-	return (without_precision(list, *out, prefix));
+	return (int_without_precision(list, *out, prefix));
 }
 
 static void	delete_minus(char **src)
@@ -88,13 +88,14 @@ static void	delete_minus(char **src)
 	*src = new;
 }
 
-int			processing_integer(t_print *list, va_list arg)
+void		check_type(t_print *list, va_arg arg, char **out)
 {
-	int		count;
-	char	*out;
-	char	*prefix;
+	unsigned long long	u_num;
+	signed long long	u_num;
+	int 				i_num;
 
-	prefix = ft_strnew(11);
+	if (list->type == 'd' || list->type == 'i' && list->typemod == 'l')
+
 	count = va_arg(arg, int);
 	if (!(out = ft_itoa(count)))
 		return (-1);
@@ -114,6 +115,15 @@ int			processing_integer(t_print *list, va_list arg)
 	}
 	if (count < 0)
 		delete_minus(&out);
+}
+
+int			processing_integer(t_print *list, va_list arg)
+{
+	char	*out;
+	char	*prefix;
+
+	prefix = ft_strnew(21);
+	check_type(list, arg, &out);
 	if (!(list->out = process_int_precision(list, &out, prefix)))
 		return (-1);
 	free(prefix);
