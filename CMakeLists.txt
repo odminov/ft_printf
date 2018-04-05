@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.9)
-project(from_git)
+project(ft_printf)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(from_git
+add_executable(ft_printf
         libft/ft_atoi.c
         libft/ft_bzero.c
         libft/ft_isalnum.c
@@ -12,6 +12,7 @@ add_executable(from_git
         libft/ft_isdigit.c
         libft/ft_isprint.c
         libft/ft_itoa.c
+        libft/ft_itoa_long.c
         libft/ft_lstadd.c
         libft/ft_lstadd_end.c
         libft/ft_lstdel.c
@@ -68,11 +69,13 @@ add_executable(from_git
         libft/ft_tolower.c
         libft/ft_toupper.c
         libft/libft.h
+        ft_itoa_base.c
         ft_printf.c
         header.h
         main.c
         parse_format.c
         parse_percent.c
+        proc_base.c
         proc_int.c
         proc_str_chars.c
         valid.c)

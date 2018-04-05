@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/18 01:25:49 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/24 10:42:52 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/05 15:59:23 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static t_print		*init_list(void)
 	new->set_precision = 0;
 	new->typemod = '\0';
 	new->doublemod = 0;
+	new->add = 0;
 	new->type = '\0';
 	new->out = NULL;
 	new->next = NULL;

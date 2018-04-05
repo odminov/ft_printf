@@ -6,46 +6,40 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/29 21:33:24 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/05 16:48:52 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-static char	*int_without_precision(t_print *list, char *out, char *prefix)
+static char		*int_without_precision(t_print *list, char *out, char *prefix)
 {
 	char	*temp;
-	int		add;
 
-
-	add = 0;
-	if ((list->sign || list->space) && (list->type != 'u' && list->type != 'U'))
-		add = 1;
-	if (list->width > (int)ft_strlen(out) + add)
+	if (list->width > (int)ft_strlen(out) + list->add)
 	{
+		//if ((list->sign || list->space) && (list->type == 'd' || list->type == 'i'))
 		if (list->zero)
 		{
-			temp = proc_width(list, out, (int)ft_strlen(out), '0', add);
+			list->add = (int)ft_strlen(prefix);
+			temp = proc_width(list, out, (int)ft_strlen(out), '0');
 			out = ft_strjoin(prefix, temp);
+			free(temp);
+			return (out);
 		}
-		else
-		{
-			out = ft_strjoin(prefix, out);
-			temp = out;
-			out = proc_width(list, out, (int)ft_strlen(out), ' ', 0);			
-		}		
-		free(temp);
-	}
-	else
-	{
-		temp = out;
 		out = ft_strjoin(prefix, out);
+		temp = out;
+		out = proc_width(list, out, (int)ft_strlen(out), ' ');	
 		free(temp);
+		return (out);
 	}
+	temp = out;
+	out = ft_strjoin(prefix, out);
+	free(temp);
 	return (out);
 }
 
-static char	*process_int_precision(t_print *list, char **out, char *prefix)
+char			*process_int_precision(t_print *list, char **out, char *prefix)
 {
 	int		i;
 	char	*temp;
@@ -55,7 +49,7 @@ static char	*process_int_precision(t_print *list, char **out, char *prefix)
 		if (list->precision > (int)ft_strlen(*out))
 		{
 			temp = prefix;
-			if (*prefix)
+			while (*prefix)
 				++prefix;
 			i = list->precision - ft_strlen(*out);
 			while (i-- > 0)
@@ -66,8 +60,8 @@ static char	*process_int_precision(t_print *list, char **out, char *prefix)
 		if (!(*out = ft_strjoin(prefix, *out)))
 			return (NULL);
 		free(temp);
-		if (list->width > (int)ft_strlen(*out))
-			return (proc_width(list, *out, (int)ft_strlen(*out), ' ', 0));
+		if (list->width > (int)ft_strlen(*out))			
+			return (proc_width(list, *out, (int)ft_strlen(*out), ' '));
 		return (*out);
 	}
 	return (int_without_precision(list, *out, prefix));
@@ -162,5 +156,6 @@ int			processing_number(t_print *list, va_list arg)
 	free(prefix);
 	if (list->width > (int)ft_strlen(out))
 		free(out);
+	list->add = 0;
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 11:39:01 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/05 13:10:09 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/05 19:18:09 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ static int			processing_format_part1(t_print *list, va_list arg)
 			return ( -1);
 		}
 	}
-	// else if (list->type == 'o' && processing_octal(list, arg) != 1)
-	// 	return (-1);
-	// else if (list->type == 'O' && processing_octal(list, arg) != 1)
-	// 	return (-1);
+	else if (list->type == 'o' && processing_oct(list, arg) != 1)
+		return (-1);
+	else if (list->type == 'O' && processing_oct(list, arg) != 1)
+		return (-1);
 	else
 	{
 		return (0);
@@ -85,10 +85,10 @@ static int			processing_format_part2(t_print *list, va_list arg)
 		return (-1);
 	else if (list->type == 'U' && processing_number(list, arg) != 1)
 		return (-1);
-	// else if (list->type == 'x' && processing_hex(list, arg) != 1)
-	// 	return (-1);
-	// else if (list->type == 'X' && processing_hex(list, arg) != 1)
-	// 	return (-1);	
+	else if (list->type == 'x' && processing_hex(list, arg) != 1)
+		return (-1);
+	else if (list->type == 'X' && processing_hex(list, arg) != 1)
+		return (-1);	
 	else
 	{
 		return (0);

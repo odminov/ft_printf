@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:35:49 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/05 13:07:26 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/05 19:17:15 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct 		s_print
 	_Bool			set_precision;
 	char			typemod;
 	_Bool			doublemod;
+	char			add;
 	char			type;
 	char			*out;
 	struct s_print	*next;
@@ -44,6 +45,10 @@ int				processing_string(t_print *list, va_list arg);
 int				processing_percent(t_print *list);
 int				processing_number(t_print *list, va_list arg);
 int				processing_char(t_print *list, va_list arg);
-char			*proc_width(t_print *list, char *src, int len, char c, int add);
+char			*proc_width(t_print *list, char *src, int len, char c);
+char			*ft_itoa_base(unsigned long value, int base, _Bool upper);
+char			*process_int_precision(t_print *list, char **out, char *prefix);
+int				processing_hex(t_print *list, va_list arg);
+int				processing_oct(t_print *list, va_list arg);
 
 #endif
