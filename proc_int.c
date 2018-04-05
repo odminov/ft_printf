@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/05 16:48:52 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/05 22:34:06 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static char		*int_without_precision(t_print *list, char *out, char *prefix)
 
 	if (list->width > (int)ft_strlen(out) + list->add)
 	{
-		//if ((list->sign || list->space) && (list->type == 'd' || list->type == 'i'))
 		if (list->zero)
 		{
 			list->add = (int)ft_strlen(prefix);
@@ -148,8 +147,11 @@ int			processing_number(t_print *list, va_list arg)
 	char	*prefix;
 	int		sign;
 
-	prefix = ft_strnew(11);
 	sign = check_type(list, arg, &out);
+	sign = 2;
+	if (list->precision - (int)ft_strlen(out) > 0)
+		sign += list->precision - (int)ft_strlen(out);
+	prefix = ft_strnew(sign);
 	set_prefix(list, prefix, sign);
 	if (!(list->out = process_int_precision(list, &out, prefix)))
 		return (-1);
