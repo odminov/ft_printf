@@ -19,12 +19,21 @@ static char	*int_without_precision(t_print *list, char *out, char *prefix)
 
 
 	add = 0;
-	if (list->sign || list->space)
+	if ((list->sign || list->space) && (list->type != 'u' && list->type != 'U'))
 		add = 1;
 	if (list->width > (int)ft_strlen(out) + add)
 	{
-		temp = proc_width(list, out, (int)ft_strlen(out), '0', add);
-		out = ft_strjoin(prefix, temp);
+		if (list->zero)
+		{
+			temp = proc_width(list, out, (int)ft_strlen(out), '0', add);
+			out = ft_strjoin(prefix, temp);
+		}
+		else
+		{
+			out = ft_strjoin(prefix, out);
+			temp = out;
+			out = proc_width(list, out, (int)ft_strlen(out), ' ', 0);			
+		}		
 		free(temp);
 	}
 	else
@@ -64,7 +73,7 @@ static char	*process_int_precision(t_print *list, char **out, char *prefix)
 	return (int_without_precision(list, *out, prefix));
 }
 
-static void	delete_minus(char **src)
+static void		delete_minus(char **src)
 {
 	char	*new;
 	char	*temp;
@@ -88,42 +97,66 @@ static void	delete_minus(char **src)
 	*src = new;
 }
 
-void		check_type(t_print *list, va_arg arg, char **out)
+static void		set_prefix(t_print *list, char *prefix, int count)
 {
-	unsigned long long	u_num;
-	signed long long	u_num;
-	int 				i_num;
-
-	if (list->type == 'd' || list->type == 'i' && list->typemod == 'l')
-
-	count = va_arg(arg, int);
-	if (!(out = ft_itoa(count)))
-		return (-1);
-	if (list->sign)
+	if ((list->type != 'u' && list->type != 'U') && list->sign)
 	{
 		if (count < 0)
 			prefix[0] = '-';
 		else
 			prefix[0] = '+';
 	}
-	if (!(list->sign) && (list->space))
+	if ((list->type != 'u' && list->type != 'U') && !(list->sign) && (list->space))
 	{
 		if (count < 0)
 			prefix[0] = '-';
 		else
 			prefix[0] = ' ';
 	}
-	if (count < 0)
-		delete_minus(&out);
 }
 
-int			processing_integer(t_print *list, va_list arg)
+static int		check_type(t_print *list, va_list arg, char **out)
+{
+	unsigned long	u_num;
+	signed long		s_num;
+	int 			i_num;
+
+	s_num = 0;
+	i_num = 0;
+	if (((list->type == 'd' || list->type == 'i') && list->typemod == 'l') || list->type == 'D')
+	{
+		s_num = va_arg(arg, signed long);
+		*out = ft_itoa_long(&s_num, 's');
+	}
+	else if ((list->type == 'u' && list->typemod == 'l') || list->type == 'U')
+	{
+		u_num = va_arg(arg, unsigned long);
+		*out = ft_itoa_long(&u_num, 'u');
+	}
+	else if (list->type == 'u' && list->typemod == '\0')
+	{
+		u_num = va_arg(arg, unsigned);
+		*out = ft_itoa_long(&u_num, 'u');
+	}
+	else
+	{
+		i_num = va_arg(arg, int);
+		*out = ft_itoa(i_num);
+	}
+	if (i_num < 0 || s_num < 0)
+		delete_minus(out);
+	return ((i_num < 0 || s_num < 0) ? -1 : 1);
+}
+
+int			processing_number(t_print *list, va_list arg)
 {
 	char	*out;
 	char	*prefix;
+	int		sign;
 
-	prefix = ft_strnew(21);
-	check_type(list, arg, &out);
+	prefix = ft_strnew(11);
+	sign = check_type(list, arg, &out);
+	set_prefix(list, prefix, sign);
 	if (!(list->out = process_int_precision(list, &out, prefix)))
 		return (-1);
 	free(prefix);

@@ -31,11 +31,6 @@ $(NAME):$(OBJ)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 
-$(NAME):
-	@gcc -Wextra -Wall -Werror -c $(SRC)
-	@ar rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
-
 clean:
 	rm -rf $(OBJ)
 

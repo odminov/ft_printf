@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:35:49 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/27 16:21:42 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/05 13:07:26 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_print			*parse_format(char *format);
 int				valid(char *format);
 int				processing_string(t_print *list, va_list arg);
 int				processing_percent(t_print *list);
-int				processing_integer(t_print *list, va_list arg);
+int				processing_number(t_print *list, va_list arg);
 int				processing_char(t_print *list, va_list arg);
 char			*proc_width(t_print *list, char *src, int len, char c, int add);
 
