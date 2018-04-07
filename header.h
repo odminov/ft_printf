@@ -15,7 +15,6 @@
 # define TYPES	"sSpdDioOuUxXcC%"
 # define FLAGS	"#0-+ "
 # define MODS	"hljz"
-# include "libft/libft.h"
 # include <stdlib.h>
 # include <stdarg.h>
 
@@ -37,6 +36,18 @@ typedef struct 		s_print
 	struct s_print	*next;
 }					t_print;
 
+int				ft_atoi(const char *str);
+int				ft_isdigit(int c);
+void			*ft_memset(void *dest, int c, size_t n);
+char			*ft_strchr(const char *s, int c);
+char			*ft_strcpy(char *dst, const char *src);
+size_t			ft_strlen(const char *s);
+char			*ft_strncpy(char *dst, const char *src, size_t len);
+char			*ft_strnew(size_t size);
+char			*ft_strjoin(char const *s1, char const *s2);
+char			*ft_itoa(int n);
+char			*ft_itoa_long(void *num, char type);
+char			*ft_strrev(char *s);
 void			parse_percent(char **str, t_print *list);
 int				contains(char *str, char c);
 t_print			*parse_format(char *format);

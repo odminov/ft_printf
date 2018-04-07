@@ -116,12 +116,12 @@ static int		check_type(t_print *list, va_list arg, char **out)
 
 	s_num = 0;
 	i_num = 0;
-	if (((list->type == 'd' || list->type == 'i') && list->typemod == 'l') || list->type == 'D')
+	if (((list->type == 'd' || list->type == 'i') && (list->typemod == 'l' || list->typemod == 'j' || list->typemod == 'z')) || list->type == 'D')
 	{
 		s_num = va_arg(arg, signed long);
 		*out = ft_itoa_long(&s_num, 's');
 	}
-	else if ((list->type == 'u' && list->typemod == 'l') || list->type == 'U')
+	else if ((list->type == 'u' && (list->typemod == 'l' || list->typemod == 'j' || list->typemod == 'z')) || list->type == 'U')
 	{
 		u_num = va_arg(arg, unsigned long);
 		*out = ft_itoa_long(&u_num, 'u');

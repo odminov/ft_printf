@@ -14,10 +14,8 @@
 
 static int	check_format(char **str)
 {
-	int		i;
 	int		mods;
 
-	i = 0;
 	mods = 0;
 	while (**str && (contains(FLAGS, **str)))
 		++(*str);
@@ -43,10 +41,8 @@ static int	check_format(char **str)
 
 int			valid(char *format)
 {
-	int		i;
 	char	*ptr;
 
-	i = 0;
 	while ((ptr = ft_strchr(format, '%')))
 	{
 		++ptr;

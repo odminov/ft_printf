@@ -12,7 +12,6 @@
 
 #include "header.h"
 #include <unistd.h>
-#include <stdio.h> //delete <-------------------------------------------------
 
 static int			processing_format_part1(t_print *list, va_list arg)
 {
@@ -80,8 +79,8 @@ static ssize_t		parse_and_print(char *format, va_list arg)
 	if (!(list = parse_format(format)))
 		return (-1);
 	temp = list;
-	if (arg)
-		;
+	// if (arg)
+	// 	;
 	ret = 0;
 	written_bytes = 0;
 	while (temp)
