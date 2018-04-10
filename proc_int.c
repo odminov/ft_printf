@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/10 14:45:10 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/10 17:35:01 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,13 @@ static void		set_prefix(t_print *list, char *prefix, int count)
 		else
 			prefix[0] = ' ';
 	}
+	if ((list->type != 'u' && list->type != 'U') && !(list->sign && !list->space))
+	{
+		if (count < 0)
+			prefix[0] = '-';
+		else
+			prefix[0] = '\0';
+	}
 }
 
 static int		check_type(t_print *list, va_list arg, char **out)
@@ -146,14 +153,15 @@ int			processing_number(t_print *list, va_list arg)
 	char	*out;
 	char	*prefix;
 	int		sign;
+	int		pref_size;
 
 	sign = check_type(list, arg, &out);
 	if ((list->set_precision) && (!ft_strcmp(out, "0")))
 		*out = '\0';
-	sign = 2;
+	pref_size = 2;
 	if (list->precision - (int)ft_strlen(out) > 0)
-		sign += list->precision - (int)ft_strlen(out);
-	prefix = ft_strnew(sign);
+		pref_size += list->precision - (int)ft_strlen(out);
+	prefix = ft_strnew(pref_size);
 	set_prefix(list, prefix, sign);
 	if (!(list->out = process_int_precision(list, &out, prefix)))
 		return (-1);
