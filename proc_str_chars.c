@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/05 16:43:23 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:26:37 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,12 @@ int			processing_string(t_print *list, va_list arg)
 	char	*out;
 	char	*str;
 	int		len;
+	char	err_11[7];
 
+	ft_strcpy(err_11, "(null)");
 	str = va_arg(arg, char *);
+	if (!str)
+		str = err_11;
 	len = (int)ft_strlen(str);
 	if ((list->set_precision) && (list->precision < len))
 		len = list->precision;

@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:35:49 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/05 23:02:16 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:00:13 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void			*ft_memset(void *dest, int c, size_t n);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strcpy(char *dst, const char *src);
 size_t			ft_strlen(const char *s);
+int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strncpy(char *dst, const char *src, size_t len);
 char			*ft_strnew(size_t size);
 char			*ft_strjoin(char const *s1, char const *s2);

@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/05 22:34:06 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/10 14:45:10 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,8 @@ int			processing_number(t_print *list, va_list arg)
 	int		sign;
 
 	sign = check_type(list, arg, &out);
+	if ((list->set_precision) && (!ft_strcmp(out, "0")))
+		*out = '\0';
 	sign = 2;
 	if (list->precision - (int)ft_strlen(out) > 0)
 		sign += list->precision - (int)ft_strlen(out);
