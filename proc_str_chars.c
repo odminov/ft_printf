@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/10 16:26:37 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/13 18:11:53 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,23 @@ int			processing_string(t_print *list, va_list arg)
 	return (1);
 }
 
+void		parse_unicode(char *str, unsigned value)
+{
+	if (value < 128)
+		str[0] = value;
+	else if (value > 127 && value < 2048)
+	{
+		str[0] = value >> 6 | 0xC0;
+		str[1] = value << 24 >> 24 | 0x80;
+	}
+	else
+		return ;
+	// else if (value > 2047 && value < 65536)
+	// {
+	// 	str[0] = 
+	// }
+}
+
 int			processing_char(t_print *list, va_list arg)
 {
 	char	*out;
@@ -76,10 +93,11 @@ int			processing_char(t_print *list, va_list arg)
 	char	c;
 	int		len;
 
-	c = (char)va_arg(arg, unsigned);
-	len = 1;
-	str = ft_strnew(1);
-	str[0] = c;
+	str = ft_strnew(4);
+	if (list->type == 'c')
+		str[0] = (char)va_arg(arg, unsigned);
+	else
+		parse_unicode(str, va_arg(arg, unsigned));
 	if ((list->width) && (list->width > len))
 	{
 		if (!(list->out = proc_width(list, str, len, ' ')))
@@ -99,13 +117,11 @@ int			processing_percent(t_print *list)
 {
 	char	*out;
 	char	*str;
-	char	c;
 	int		len;
 
-	c = '%';
 	len = 1;
 	str = ft_strnew(1);
-	str[0] = c;
+	str[0] = '%';
 	if ((list->width) && (list->width > len))
 	{
 		if (!(list->out = proc_width(list, str, len, ' ')))
