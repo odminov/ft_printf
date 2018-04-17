@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 21:29:57 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 21:42:56 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,10 @@ char		*proc_width(t_print *list, char *src, int len, char c)
 	return (out);
 }
 
-void		parse_unicode(char *str, unsigned value)
+int		parse_unicode(char *str, unsigned value)
 {
+	if (value > 127 && MB_CUR_MAX != 4)
+		return (0);
 	if (value < 128)
 		str[0] = value;
 	else if (value > 127 && value < 2048)
@@ -63,9 +65,10 @@ void		parse_unicode(char *str, unsigned value)
 		str[2] = (value << 20 >> 20) >> 6 | 0x80;
 		str[3] = (value << 26 >> 26) | 0x80;
 	}
+	return (1);
 }
 
-void		unicode_string(unsigned *str, char **out)
+int		unicode_string(unsigned *str, char **out)
 {
 	char	*uni_str;
 	char	*temp;
@@ -74,7 +77,7 @@ void		unicode_string(unsigned *str, char **out)
 	if (!str)
 	{
 		*out = NULL;
-		return ;
+		return (0);
 	}
 	i = 0;
 	uni_str = ft_strnew(4);
@@ -82,13 +85,19 @@ void		unicode_string(unsigned *str, char **out)
 	while(str[i])
 	{
 		ft_strclr(uni_str);
-		parse_unicode(uni_str, str[i]);
+		if (!parse_unicode(uni_str, str[i]))
+		{
+			free(uni_str);
+			free(*out);
+			return (0);
+		}
 		temp = *out;
 		*out = ft_strjoin(*out, uni_str);
 		free(temp);
 		++i;
 	}
 	free(uni_str);
+	return (1);
 }
 
 int			processing_string(t_print *list, va_list arg)
@@ -101,9 +110,8 @@ int			processing_string(t_print *list, va_list arg)
 	ft_strcpy(err_11, "(null)");
 	if (list->type == 'S' || (list->type == 's' && list->typemod == 'l'))
 	{
-		if (MB_CUR_MAX != 4)
+		if (!unicode_string(va_arg(arg, unsigned *), &str))
 			return (-1);
-		unicode_string(va_arg(arg, unsigned *), &str);
 	}
 	else
 		str = va_arg(arg, char *);
@@ -137,9 +145,11 @@ int			processing_char(t_print *list, va_list arg)
 	str = ft_strnew(4);
 	if (list->type == 'C' || (list->type == 'c' && list->typemod == 'l'))
 	{
-		if (MB_CUR_MAX != 4)
+		if (!parse_unicode(str, va_arg(arg, unsigned)))
+		{
+			free(str);
 			return (-1);
-		parse_unicode(str, va_arg(arg, unsigned));
+		}
 	}
 	else
 		str[0] = (char)va_arg(arg, unsigned);

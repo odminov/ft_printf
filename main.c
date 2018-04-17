@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:12:35 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 21:31:16 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 21:35:26 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		ft_printf(const char *format, ...);
 int		main(void)
 {	
 	int i;
-	char *str = "\"%.2c\"\n";
+	char *str = "\"%C\"\n";
 	//char *test = "string";
 	// setlocale(LC_ALL, "");
 	// unsigned long long j = 1;
@@ -28,10 +28,10 @@ int		main(void)
 	// printf("%i\n", i);
 	// i = ft_printf("string: %s, digit: %d, and another simbols, and %% and %+-20.50lld");
 	// i = 0;
-	i = printf(str, NULL);
+	i = printf(str, 'a');
 	printf("%i\n", i);
 	i = 0;
-	i = ft_printf(str, NULL);
+	i = ft_printf(str, 'a');
 	printf("%i\n", i);
 	system("leaks -quiet test");
     // system("leaks -quiet ft_printf");
