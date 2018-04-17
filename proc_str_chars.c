@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/13 18:11:53 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 14:09:36 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,19 @@ void		parse_unicode(char *str, unsigned value)
 		str[0] = value >> 6 | 0xC0;
 		str[1] = value << 24 >> 24 | 0x80;
 	}
+	else if (value > 2047 && value < 65536)
+	{
+		str[0] = value >> 12 | 0xE0;
+		str[1] = (value << 16 >> 16) >> 6 | 0x80;
+		str[2] = value << 24 >> 24 | 0x80;
+	}
 	else
-		return ;
-	// else if (value > 2047 && value < 65536)
-	// {
-	// 	str[0] = 
-	// }
+	{
+		str[0] = value >> 18 | 0xF0;
+		str[1] = (value << 8 >> 8) >> 12 | 0x80;
+		str[2] = (value << 16 >> 16) >> 6 | 0x80;
+		str[3] = value << 24 >> 24 | 0x80;
+	}
 }
 
 int			processing_char(t_print *list, va_list arg)
