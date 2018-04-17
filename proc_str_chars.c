@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 15:23:01 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 16:46:23 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ void		unicode_string(unsigned *str, char **out)
 	char	*temp;
 	int		i;
 
+	if (!str)
+	{
+		*out = NULL;
+		return ;
+	}
 	i = 0;
 	uni_str = ft_strnew(4);
 	*out = ft_strnew(0);
@@ -95,7 +100,11 @@ int			processing_string(t_print *list, va_list arg)
 
 	ft_strcpy(err_11, "(null)");
 	if (list->type == 'S')
+	{
+		if (MB_CUR_MAX != 4)
+			return (-1);
 		unicode_string(va_arg(arg, unsigned *), &str);
+	}
 	else
 		str = va_arg(arg, char *);
 	if (!str)
@@ -114,6 +123,8 @@ int			processing_string(t_print *list, va_list arg)
 			return (-1);
 		list->out = ft_strncpy(out, str, len);
 	}
+	if (list->type == 'S')
+		free(str);
 	return (1);
 }
 

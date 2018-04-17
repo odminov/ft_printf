@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:35:49 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 15:16:12 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 16:47:01 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define MODS	"hljz"
 # include <stdlib.h>
 # include <stdarg.h>
+# include <locale.h>
 
 typedef struct 		s_print
 {

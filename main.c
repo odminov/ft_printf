@@ -6,12 +6,13 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:12:35 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/10 17:27:15 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 16:57:27 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 
 int		ft_printf(const char *format, ...);
 
@@ -19,18 +20,17 @@ int		main(void)
 {	
 	int i;
 	//char *test = "string";
-
+	setlocale(LC_ALL, "");
 	// unsigned long long j = 1;
-	char *str = "\"%-d\"\n";
 	// char *param = "hello world";
-	i = 0;
 	// i = printf("\"%hhi, %s\"\n", out, test);
 	// printf("%i\n", i);
 	// i = ft_printf("string: %s, digit: %d, and another simbols, and %% and %+-20.50lld");
 	// i = 0;
-	i = printf(str, -2147483648);
+	i = printf("\"%2.2S\"\n", L"п ॠ");
 	printf("%i\n", i);
-	i = ft_printf(str, -2147483648);
+	i = 0;
+	i = ft_printf("\"%2.2S\"\n", L"п ॠ");
 	printf("%i\n", i);
 	system("leaks -quiet test");
     // system("leaks -quiet ft_printf");

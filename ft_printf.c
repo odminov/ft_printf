@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 11:39:01 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/05 23:20:51 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 16:54:36 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,18 @@ static ssize_t		parse_and_print(char *format, va_list arg)
 			if ((ret = processing_format_part1(temp, arg)) != 1)
 			{
 				if (ret < 0)
-					return (my_ret(list, -13));
+					return (my_ret(list, -1));
 				if (!ret && (ret = processing_format_part2(temp, arg)) < 0)
-					return (my_ret(list, -14));
+					return (my_ret(list, -1));
 			}
 		}
+		temp = temp->next;
+	}
+	temp = list;
+	while (temp)
+	{
 		if (temp->out)
-			written_bytes += write(1, temp->out, ft_strlen(temp->out));		
+			written_bytes += write(1, temp->out, ft_strlen(temp->out));
 		temp = temp->next;
 	}
 	return (my_ret(list, written_bytes));
