@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:35:49 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/10 14:00:13 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 15:16:12 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct 		s_print
 
 int				ft_atoi(const char *str);
 int				ft_isdigit(int c);
+void			ft_strclr(char *s);
 void			*ft_memset(void *dest, int c, size_t n);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strcpy(char *dst, const char *src);
