@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:12:35 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 23:01:34 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 23:33:15 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ int		main(void)
 	// printf("%i\n", i);
 	// i = ft_printf("string: %s, digit: %d, and another simbols, and %% and %+-20.50lld");
 	i = 0;
-	i = printf("\"%ho\"\n", -127);
+	i = printf("\"%c\"\n", L'�');
 	printf("%i\n", i);
 	i = 0;
-	i = ft_printf("\"%ho\"\n", -127);
+	i = ft_printf("\"%c\"\n", L'�');
 	printf("%i\n", i);
 	system("leaks -quiet test");
     // system("leaks -quiet ft_printf");

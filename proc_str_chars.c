@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 22:35:45 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 23:34:04 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ char		*proc_width(t_print *list, char *src, int len, char c)
 
 int		parse_unicode(char *str, unsigned value)
 {
-	if (value > 127 && MB_CUR_MAX != 4)
-		return (0);
+	// if ((value > 127) && (MB_CUR_MAX != 4))
+	// 	return (0);
 	if (value < 128)
 		str[0] = value;
 	else if (value > 127 && value < 2048)
