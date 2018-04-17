@@ -6,12 +6,14 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 11:39:01 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 21:37:06 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 22:14:45 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include <unistd.h>
+
+#include <stdio.h> ///ahufjoasjd
 
 static int			processing_format_part1(t_print *list, va_list arg)
 {
@@ -75,7 +77,8 @@ static ssize_t		parse_and_print(char *format, va_list arg)
 	t_print		*temp;
 	ssize_t		written_bytes;
 	int			ret;
-
+	if (!ft_strcmp(format, "%"))
+		return (0);
 	if (!(list = parse_format(format)))
 		return (-1);
 	temp = list;

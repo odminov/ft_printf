@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 21:42:56 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 22:35:45 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		unicode_string(unsigned *str, char **out)
 	if (!str)
 	{
 		*out = NULL;
-		return (0);
+		return (1);
 	}
 	i = 0;
 	uni_str = ft_strnew(4);
@@ -131,7 +131,7 @@ int			processing_string(t_print *list, va_list arg)
 			return (-1);
 		list->out = ft_strncpy(out, str, len);
 	}
-	if (list->type == 'S' || (list->type == 's' && list->typemod == 'l'))
+	if ((list->type == 'S' || (list->type == 's' && list->typemod == 'l')) && ft_strcmp(str, "(null)"))
 		free(str);
 	return (1);
 }

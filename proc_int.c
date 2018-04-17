@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 21:15:13 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 21:58:20 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,16 @@ static int		check_type(t_print *list, va_list arg, char **out)
 	else if ((list->type == 'd' || list->type == 'i') && (list->typemod == 'h' && list->doublemod))
 	{
 		s_num = (signed char)va_arg(arg, signed long);
+		*out = ft_itoa_long(&s_num, 's');
+	}
+	else if ((list->type == 'u') && (list->typemod == 'h' && !list->doublemod))
+	{
+		s_num = (unsigned short)va_arg(arg, signed long);
+		*out = ft_itoa_long(&s_num, 's');
+	}
+	else if ((list->type == 'u') && (list->typemod == 'h' && list->doublemod))
+	{
+		s_num = (unsigned char)va_arg(arg, signed long);
 		*out = ft_itoa_long(&s_num, 's');
 	}
 	else if ((list->type == 'u' && (list->typemod == 'l'

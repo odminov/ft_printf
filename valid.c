@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahonchar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 11:56:02 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/15 11:57:13 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 22:14:19 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			valid(char *format)
 	{
 		++ptr;
 		if (!*ptr)
-			return (0);
+			return (1);
 		if (!check_format(&ptr))
 			return (0);
 		format = ptr;
