@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 16:46:23 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 17:29:10 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int			processing_string(t_print *list, va_list arg)
 	char	err_11[7];
 
 	ft_strcpy(err_11, "(null)");
-	if (list->type == 'S')
+	if (list->type == 'S' || (list->type == 's' && list->typemod == 'l'))
 	{
 		if (MB_CUR_MAX != 4)
 			return (-1);
@@ -135,10 +135,14 @@ int			processing_char(t_print *list, va_list arg)
 	int		len;
 
 	str = ft_strnew(4);
-	if (list->type == 'c')
-		str[0] = (char)va_arg(arg, unsigned);
-	else
+	if (list->type == 'C' || (list->type == 'c' && list->typemod == 'l'))
+	{
+		if (MB_CUR_MAX != 4)
+			return (-1);
 		parse_unicode(str, va_arg(arg, unsigned));
+	}
+	else
+		str[0] = (char)va_arg(arg, unsigned);
 	len = ft_strlen(str);
 	if ((list->width) && (list->width > len))
 	{
