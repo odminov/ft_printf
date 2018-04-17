@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/10 17:35:01 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 21:15:13 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ static char		*int_without_precision(t_print *list, char *out, char *prefix)
 			free(temp);
 			return (out);
 		}
-		out = ft_strjoin(prefix, out);
 		temp = out;
-		out = proc_width(list, out, (int)ft_strlen(out), ' ');	
+		out = ft_strjoin(prefix, out);
+		free(temp);
+		temp = out;
+		out = proc_width(list, out, (int)ft_strlen(out), ' ');
 		free(temp);
 		return (out);
 	}
@@ -38,32 +40,36 @@ static char		*int_without_precision(t_print *list, char *out, char *prefix)
 	return (out);
 }
 
-char			*process_int_precision(t_print *list, char **out, char *prefix)
+char			*process_int_precision(t_print *list, char *out, char *prefix)
 {
 	int		i;
 	char	*temp;
 
 	if (list->set_precision)
 	{
-		if (list->precision > (int)ft_strlen(*out))
+		if (list->precision > (int)ft_strlen(out))
 		{
 			temp = prefix;
 			while (*prefix)
 				++prefix;
-			i = list->precision - ft_strlen(*out);
+			i = list->precision - ft_strlen(out);
 			while (i-- > 0)
 				*prefix++ = '0';
 			prefix = temp;
 		}
-		temp = *out;
-		if (!(*out = ft_strjoin(prefix, *out)))
+		temp = out;
+		if (!(out = ft_strjoin(prefix, out)))
 			return (NULL);
 		free(temp);
-		if (list->width > (int)ft_strlen(*out))			
-			return (proc_width(list, *out, (int)ft_strlen(*out), ' '));
-		return (*out);
+		if (list->width > (int)ft_strlen(out))
+		{	
+			temp = out;
+			out = proc_width(list, out, (int)ft_strlen(out), ' ');
+			free(temp);
+		}
+		return (out);
 	}
-	return (int_without_precision(list, *out, prefix));
+	return (int_without_precision(list, out, prefix));
 }
 
 static void		delete_minus(char **src)
@@ -106,7 +112,7 @@ static void		set_prefix(t_print *list, char *prefix, int count)
 		else
 			prefix[0] = ' ';
 	}
-	if ((list->type != 'u' && list->type != 'U') && !(list->sign && !list->space))
+	if ((list->type != 'u' && list->type != 'U') && (!list->sign && !list->space))
 	{
 		if (count < 0)
 			prefix[0] = '-';
@@ -123,12 +129,24 @@ static int		check_type(t_print *list, va_list arg, char **out)
 
 	s_num = 0;
 	i_num = 0;
-	if (((list->type == 'd' || list->type == 'i') && (list->typemod == 'l' || list->typemod == 'j' || list->typemod == 'z')) || list->type == 'D')
+	if (((list->type == 'd' || list->type == 'i') && (list->typemod == 'l'
+		|| list->typemod == 'j' || list->typemod == 'z')) || list->type == 'D')
 	{
 		s_num = va_arg(arg, signed long);
 		*out = ft_itoa_long(&s_num, 's');
 	}
-	else if ((list->type == 'u' && (list->typemod == 'l' || list->typemod == 'j' || list->typemod == 'z')) || list->type == 'U')
+	else if ((list->type == 'd' || list->type == 'i') && (list->typemod == 'h' && !list->doublemod))
+	{
+		s_num = (short)va_arg(arg, signed long);
+		*out = ft_itoa_long(&s_num, 's');
+	}
+	else if ((list->type == 'd' || list->type == 'i') && (list->typemod == 'h' && list->doublemod))
+	{
+		s_num = (signed char)va_arg(arg, signed long);
+		*out = ft_itoa_long(&s_num, 's');
+	}
+	else if ((list->type == 'u' && (list->typemod == 'l'
+		|| list->typemod == 'j' || list->typemod == 'z')) || list->type == 'U')
 	{
 		u_num = va_arg(arg, unsigned long);
 		*out = ft_itoa_long(&u_num, 'u');
@@ -163,11 +181,9 @@ int			processing_number(t_print *list, va_list arg)
 		pref_size += list->precision - (int)ft_strlen(out);
 	prefix = ft_strnew(pref_size);
 	set_prefix(list, prefix, sign);
-	if (!(list->out = process_int_precision(list, &out, prefix)))
+	if (!(list->out = process_int_precision(list, out, prefix)))
 		return (-1);
 	free(prefix);
-	if (list->width > (int)ft_strlen(out))
-		free(out);
 	list->add = 0;
 	return (1);
 }

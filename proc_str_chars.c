@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/21 13:09:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 17:29:10 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 21:29:57 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int			processing_string(t_print *list, va_list arg)
 			return (-1);
 		list->out = ft_strncpy(out, str, len);
 	}
-	if (list->type == 'S')
+	if (list->type == 'S' || (list->type == 's' && list->typemod == 'l'))
 		free(str);
 	return (1);
 }

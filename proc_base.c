@@ -6,11 +6,14 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 15:19:27 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/10 17:02:50 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 20:39:52 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+//
+#include <stdio.h>
 
 int		processing_hex(t_print *list, va_list arg)
 {
@@ -19,7 +22,7 @@ int		processing_hex(t_print *list, va_list arg)
 	char			*prefix;
 	int				prefsize;
 
-	if ((list->type == 'x' || list->type == 'X') && list->typemod == 'l')
+	if ((list->type == 'x' || list->type == 'X') && (list->typemod == 'l' || list->typemod == 'j' || list->typemod == 'z'))
 		value = va_arg(arg, unsigned long);
 	else
 		value = va_arg(arg, unsigned);
@@ -32,14 +35,17 @@ int		processing_hex(t_print *list, va_list arg)
 		prefsize += list->precision - (int)ft_strlen(out);
 	prefix = ft_strnew(prefsize);
 	if (list->specformat && ft_strcmp(out, "0"))
-		ft_strcpy(prefix, "0x");
+	{
+		if (list->type == 'X')
+			ft_strcpy(prefix, "0X");
+		else
+			ft_strcpy(prefix, "0x");
+	}
 	if ((!ft_strcmp(out, "0")) && (list->set_precision))
 		*out = '\0';
-	if (!(list->out = process_int_precision(list, &out, prefix)))
+	if (!(list->out = process_int_precision(list, out, prefix)))
 		return (0);
 	free(prefix);
-	if (list->width > (int)ft_strlen(out))
-		free(out);
 	return (1);
 }
 
@@ -50,7 +56,7 @@ int		processing_oct(t_print *list, va_list arg)
 	char			*prefix;
 	int				prefsize;
 
-	if (list->type == 'O' || (list->type == 'o' && list->typemod == 'l'))
+	if (list->type == 'O' || ((list->type == 'o') && (list->typemod == 'l' || list->typemod == 'j' || list->typemod == 'z')))
 		value = va_arg(arg, unsigned long);
 	else
 		value = va_arg(arg, unsigned);
@@ -66,10 +72,8 @@ int		processing_oct(t_print *list, va_list arg)
 	prefix = ft_strnew(prefsize);
 	if (list->specformat)
 		prefix[0] = '0';
-	if (!(list->out = process_int_precision(list, &out, prefix)))
+	if (!(list->out = process_int_precision(list, out, prefix)))
 		return (0);
 	free(prefix);
-	if (list->width > (int)ft_strlen(out))
-		free(out);
 	return (1);
 }

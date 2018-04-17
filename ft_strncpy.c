@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahonchar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 21:52:52 by ahonchar          #+#    #+#             */
-/*   Updated: 2017/12/02 20:20:39 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/04/17 21:29:18 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ char	*ft_strncpy(char *dst, const char *src, size_t len)
 			dst[i] = '\0';
 		i++;
 	}
+	dst[i] = '\0';
 	return (dst);
 }
