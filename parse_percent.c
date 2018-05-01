@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/18 01:23:24 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/03/24 10:44:12 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/05/01 15:50:00 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,25 @@
 
 static void		parse_flags(t_print *list, char **str)
 {
-	if (**str == '#')
+	if (**str == '#' && ++(*str))
 	{
 		list->specformat = 1;
-		++(*str);
 	}
-	else if (**str == '0')
+	else if (**str == '0' && ++(*str))
 	{
 		list->zero = 1;
-		++(*str);
 	}
-	else if (**str == '-')
+	else if (**str == '-' && ++(*str))
 	{
 		list->align = 1;
-		++(*str);
 	}
-	else if (**str == '+')
+	else if (**str == '+' && ++(*str))
 	{
 		list->sign = 1;
-		++(*str);
 	}
-	else if (**str == ' ')
+	else if (**str == ' ' && ++(*str))
 	{
 		list->space = 1;
-		++(*str);
 	}
 	else
 		return ;
@@ -54,7 +49,7 @@ static void		parse_mods(t_print *list, char **str)
 	}
 }
 
-static void		parse_width(t_print *list, char **str)
+static void		parse_width(t_print *list, char **str, va_list arg)
 {
 	int		i;
 	char	width[11];
@@ -67,10 +62,19 @@ static void		parse_width(t_print *list, char **str)
 		++(*str);
 	}
 	width[i] = '\0';
-	list->width = ft_atoi(width);
+	if (**str == '*' && ++(*str))
+	{
+		if ((list->width = va_arg(arg, int)) < 0)
+		{
+			list->width = list->width * -1;
+			list->align = 1;
+		}
+	}
+	else
+		list->width = ft_atoi(width);
 }
 
-static void		parse_pecision(t_print *list, char **str)
+static void		parse_pecision(t_print *list, char **str, va_list arg)
 {
 	char	precision[11];
 	int		i;
@@ -87,10 +91,16 @@ static void		parse_pecision(t_print *list, char **str)
 		++(*str);
 	}
 	precision[i] = '\0';
-	list->precision = ft_atoi(precision);
+	if (**str == '*' && ++(*str))
+	{
+		if ((list->precision = va_arg(arg, int)) < 0)
+			list->set_precision = 0;
+	}
+	else
+		list->precision = ft_atoi(precision);
 }
 
-void			parse_percent(char **str, t_print *list)
+void			parse_percent(char **str, t_print *list, va_list arg)
 {
 	while (**str && (!contains(TYPES, **str)))
 	{
@@ -98,10 +108,10 @@ void			parse_percent(char **str, t_print *list)
 			parse_flags(list, str);
 		else if (contains(MODS, **str))
 			parse_mods(list, str);
-		else if (ft_isdigit(**str))
-			parse_width(list, str);
+		else if (ft_isdigit(**str) || **str == '*')
+			parse_width(list, str, arg);
 		else if (**str == '.')
-			parse_pecision(list, str);
+			parse_pecision(list, str, arg);
 		else
 			++(*str);
 	}

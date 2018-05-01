@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 13:35:49 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 19:56:32 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/05/01 16:41:02 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,11 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_itoa(int n);
 char			*ft_itoa_long(void *num, char type);
 char			*ft_strrev(char *s);
-void			parse_percent(char **str, t_print *list);
+int				my_ret(t_print *list, int ret);
+void			parse_percent(char **str, t_print *list, va_list arg);
+int				parse_unicode(char *str, unsigned value);
 int				contains(char *str, char c);
-t_print			*parse_format(char *format);
+t_print			*parse_format(char *format, va_list arg);
 int				valid(char *format);
 int				processing_string(t_print *list, va_list arg);
 int				processing_percent(t_print *list);

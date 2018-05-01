@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/18 01:25:49 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 22:08:59 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/05/01 15:47:24 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int			sizebeforechr(char *str, char c)
 	int i;
 
 	i = 0;
-	while((str[i]) && (str[i] != c))
+	while ((str[i]) && (str[i] != c))
 	{
 		++i;
 	}
@@ -80,13 +80,13 @@ static int			copytolist(char **str, t_print *list)
 		return (1);
 	}
 	else
-	 	(*str)+= i;
+		(*str) += i;
 	return (0);
 }
 
-t_print		*parse_format(char *format)
+t_print				*parse_format(char *format, va_list arg)
 {
-	t_print 	*new;
+	t_print		*new;
 	t_print		*head;
 	int			res;
 
@@ -103,12 +103,12 @@ t_print		*parse_format(char *format)
 		}
 		if (format && *format)
 		{
-			parse_percent(&format, new);
+			parse_percent(&format, new, arg);
 			if (!*format)
-				break;
+				break ;
 			new->next = init_list();
 			new = new->next;
-		}		
+		}
 	}
 	return (head);
 }

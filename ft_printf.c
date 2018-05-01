@@ -6,14 +6,12 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 11:39:01 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/04/17 22:14:45 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/05/01 16:37:17 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include <unistd.h>
-
-#include <stdio.h> ///ahufjoasjd
 
 static int			processing_format_part1(t_print *list, va_list arg)
 {
@@ -30,7 +28,7 @@ static int			processing_format_part1(t_print *list, va_list arg)
 	else if (list->type == 'D' && processing_number(list, arg) != 1)
 		return (-1);
 	else if (list->type == 'i' && processing_number(list, arg) != 1)
-		return ( -1);
+		return (-1);
 	else if (list->type == 'o' && processing_oct(list, arg) != 1)
 		return (-1);
 	else if (list->type == 'O' && processing_oct(list, arg) != 1)
@@ -53,39 +51,44 @@ static int			processing_format_part2(t_print *list, va_list arg)
 	else if (list->type == 'x' && processing_hex(list, arg) != 1)
 		return (-1);
 	else if (list->type == 'X' && processing_hex(list, arg) != 1)
-		return (-1);	
+		return (-1);
 	else
 		return (0);
 	return (1);
 }
 
-static int	my_ret(t_print *list, int ret)
+static ssize_t		print_res(t_print *temp)
 {
-	while (list)
+	ssize_t written_bytes;
+
+	written_bytes = 0;
+	while (temp)
 	{
-		if (list->out)
-			free(list->out);
-		free(list);
-		list = list->next;
+		if ((temp->type == 'c' || temp->type == 'C') && temp->zero)
+		{
+			written_bytes += write(1, temp->out, ft_strlen(temp->out) + 1);
+			temp = temp->next;
+			continue;
+		}
+		if (temp->out)
+			written_bytes += write(1, temp->out, ft_strlen(temp->out));
+		temp = temp->next;
 	}
-	return (ret);
+	return (written_bytes);
 }
 
 static ssize_t		parse_and_print(char *format, va_list arg)
 {
 	t_print		*list;
 	t_print		*temp;
-	ssize_t		written_bytes;
 	int			ret;
+
 	if (!ft_strcmp(format, "%"))
 		return (0);
-	if (!(list = parse_format(format)))
+	if (!(list = parse_format(format, arg)))
 		return (-1);
 	temp = list;
-	// if (arg)
-	// 	;
 	ret = 0;
-	written_bytes = 0;
 	while (temp)
 	{
 		if (temp->type != '\0')
@@ -100,17 +103,10 @@ static ssize_t		parse_and_print(char *format, va_list arg)
 		}
 		temp = temp->next;
 	}
-	temp = list;
-	while (temp)
-	{
-		if (temp->out)
-			written_bytes += write(1, temp->out, ft_strlen(temp->out));
-		temp = temp->next;
-	}
-	return (my_ret(list, written_bytes));
+	return (my_ret(list, print_res(list)));
 }
 
-int			ft_printf(const char *format, ...)
+int					ft_printf(const char *format, ...)
 {
 	va_list	arg;
 	ssize_t	out;
