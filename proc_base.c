@@ -6,31 +6,34 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 15:19:27 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/05/01 16:02:13 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/05/03 19:09:59 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-static void	check_mods_hex(t_print *list, va_list arg, char **out)
+static char	*check_mods_hex(t_print *list, va_list arg)
 {
 	unsigned long	value;
+	char			*out;
 
+	out = NULL;
 	if ((list->type == 'x' || list->type == 'X') &&
 		(list->typemod == 'l' || list->typemod == 'j' || list->typemod == 'z'))
 		value = va_arg(arg, unsigned long);
 	else if ((list->type == 'x' || list->type == 'X') &&
 		list->typemod == 'h' && !list->doublemod)
-		value = (unsigned short)va_arg(arg, unsigned);
+		value = (unsigned short)va_arg(arg, int);
 	else if ((list->type == 'x' || list->type == 'X') &&
 		list->typemod == 'h' && list->doublemod)
-		value = (unsigned char)va_arg(arg, unsigned);
+		value = (unsigned char)va_arg(arg, int);
 	else
 		value = va_arg(arg, unsigned);
 	if (list->type == 'x')
-		*out = ft_itoa_base(value, 16, 0);
+		out = ft_itoa_base(value, 16, 0);
 	else
-		*out = ft_itoa_base(value, 16, 1);
+		out = ft_itoa_base(value, 16, 1);
+	return (out);
 }
 
 int			processing_hex(t_print *list, va_list arg)
@@ -39,8 +42,8 @@ int			processing_hex(t_print *list, va_list arg)
 	char			*prefix;
 	int				prefsize;
 
-	out = NULL;
-	check_mods_hex(list, arg, &out);
+	if (!(out = check_mods_hex(list, arg)))
+		return (-1);
 	prefsize = 2;
 	if (list->precision - (int)ft_strlen(out) > 0)
 		prefsize += list->precision - (int)ft_strlen(out);
@@ -60,20 +63,23 @@ int			processing_hex(t_print *list, va_list arg)
 	return (1);
 }
 
-static void	check_mods_oct(t_print *list, va_list arg, char **out)
+static char	*check_mods_oct(t_print *list, va_list arg)
 {
 	unsigned long	value;
+	char			*out;
 
+	out = NULL;
 	if (list->type == 'O' || ((list->type == 'o') &&
 		(list->typemod == 'l' || list->typemod == 'j' || list->typemod == 'z')))
 		value = va_arg(arg, unsigned long);
 	else if (list->type == 'o' && list->typemod == 'h' && !list->doublemod)
-		value = (unsigned short)va_arg(arg, unsigned);
+		value = (unsigned short)va_arg(arg, int);
 	else if (list->type == 'o' && list->typemod == 'h' && list->doublemod)
-		value = (unsigned char)va_arg(arg, unsigned);
+		value = (unsigned char)va_arg(arg, int);
 	else
 		value = va_arg(arg, unsigned);
-	*out = ft_itoa_base(value, 8, 0);
+	out = ft_itoa_base(value, 8, 0);
+	return (out);
 }
 
 int			processing_oct(t_print *list, va_list arg)
@@ -82,7 +88,8 @@ int			processing_oct(t_print *list, va_list arg)
 	char			*prefix;
 	int				prefsize;
 
-	check_mods_oct(list, arg, &out);
+	if (!(out = check_mods_oct(list, arg)))
+		return (-1);
 	prefsize = 2;
 	if ((!ft_strcmp(out, "0")) && (list->set_precision || list->specformat))
 		*out = '\0';

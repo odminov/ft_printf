@@ -6,37 +6,13 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/24 10:12:08 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/05/01 16:50:44 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/05/03 18:10:15 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-static void		delete_minus(char **src)
-{
-	char	*new;
-	char	*temp;
-	int		i;
-
-	temp = *src;
-	new = (char *)malloc(ft_strlen(*src));
-	i = 0;
-	while (**src)
-	{
-		if (**src == '-')
-		{	
-			++(*src);
-			continue;
-		}
-		new[i++] = **src;
-		++(*src);
-	}
-	new[i] = '\0';
-	free(temp);
-	*src = new;
-}
-
-static void		set_prefix(t_print *list, char *prefix, int count)
+void	set_prefix(t_print *list, char *prefix, int count)
 {
 	if ((list->type != 'u' && list->type != 'U') && list->sign)
 	{
@@ -45,14 +21,14 @@ static void		set_prefix(t_print *list, char *prefix, int count)
 		else
 			prefix[0] = '+';
 	}
-	if ((list->type != 'u' && list->type != 'U') && !(list->sign) && (list->space))
+	if (list->type != 'u' && list->type != 'U' && !list->sign && list->space)
 	{
 		if (count < 0)
 			prefix[0] = '-';
 		else
 			prefix[0] = ' ';
 	}
-	if ((list->type != 'u' && list->type != 'U') && (!list->sign && !list->space))
+	if (list->type != 'u' && list->type != 'U' && !list->sign && !list->space)
 	{
 		if (count < 0)
 			prefix[0] = '-';
@@ -61,62 +37,85 @@ static void		set_prefix(t_print *list, char *prefix, int count)
 	}
 }
 
-static int		check_type(t_print *list, va_list arg, char **out)
+int		check_type1(t_print *list, va_list arg, char **out, signed long *s_num)
 {
-	unsigned long	u_num;
-	signed long		s_num;
-	int 			i_num;
+	int i;
 
-	s_num = 0;
-	i_num = 0;
+	i = 1;
 	if (((list->type == 'd' || list->type == 'i') && (list->typemod == 'l'
 		|| list->typemod == 'j' || list->typemod == 'z')) || list->type == 'D')
 	{
-		s_num = va_arg(arg, signed long);
-		*out = ft_itoa_long(&s_num, 's');
+		*s_num = va_arg(arg, signed long);
+		*out = ft_itoa_long(s_num, 's');
 	}
-	else if ((list->type == 'd' || list->type == 'i') && (list->typemod == 'h' && !list->doublemod))
+	else if ((list->type == 'd' || list->type == 'i') &&
+		(list->typemod == 'h' && !list->doublemod))
 	{
-		s_num = (short)va_arg(arg, signed long);
-		*out = ft_itoa_long(&s_num, 's');
+		*s_num = (short)va_arg(arg, signed long);
+		*out = ft_itoa_long(s_num, 's');
 	}
-	else if ((list->type == 'd' || list->type == 'i') && (list->typemod == 'h' && list->doublemod))
+	else if ((list->type == 'd' || list->type == 'i') &&
+		(list->typemod == 'h' && list->doublemod))
 	{
-		s_num = (signed char)va_arg(arg, signed long);
-		*out = ft_itoa_long(&s_num, 's');
+		*s_num = (signed char)va_arg(arg, signed long);
+		*out = ft_itoa_long(s_num, 's');
 	}
-	else if ((list->type == 'u') && (list->typemod == 'h' && !list->doublemod))
+	else
+		i = 0;
+	return (i);
+}
+
+int		check_type2(t_print *list, va_list arg, char **out, signed long *s_num)
+{
+	int i;
+
+	i = 1;
+	if ((list->type == 'u') && (list->typemod == 'h' && !list->doublemod))
 	{
-		s_num = (unsigned short)va_arg(arg, signed long);
-		*out = ft_itoa_long(&s_num, 's');
+		*s_num = (unsigned short)va_arg(arg, unsigned long);
+		*out = ft_itoa_long(s_num, 's');
 	}
-	else if ((list->type == 'u') && (list->typemod == 'h' && list->doublemod))
+	else if (list->type == 'u' && list->typemod == 'h' && list->doublemod)
 	{
-		s_num = (unsigned char)va_arg(arg, signed long);
-		*out = ft_itoa_long(&s_num, 's');
-	}
-	else if ((list->type == 'u' && (list->typemod == 'l'
-		|| list->typemod == 'j' || list->typemod == 'z')) || list->type == 'U')
-	{
-		u_num = va_arg(arg, unsigned long);
-		*out = ft_itoa_long(&u_num, 'u');
-	}
-	else if (list->type == 'u' && list->typemod == '\0')
-	{
-		u_num = va_arg(arg, unsigned);
-		*out = ft_itoa_long(&u_num, 'u');
+		*s_num = (unsigned char)va_arg(arg, signed long);
+		*out = ft_itoa_long(s_num, 's');
 	}
 	else
 	{
-		i_num = va_arg(arg, int);
-		*out = ft_itoa(i_num);
+		*s_num = va_arg(arg, int);
+		*out = ft_itoa_long(s_num, 's');
 	}
-	if (i_num < 0 || s_num < 0)
-		delete_minus(out);
-	return ((i_num < 0 || s_num < 0) ? -1 : 1);
+	return (i);
 }
 
-int			processing_number(t_print *list, va_list arg)
+int		check_type(t_print *list, va_list arg, char **out)
+{
+	unsigned long	u_num;
+	signed long		s_num;
+
+	s_num = 0;
+	if (!check_type1(list, arg, out, &s_num))
+	{
+		if ((list->type == 'u' && (list->typemod == 'l'
+	|| list->typemod == 'j' || list->typemod == 'z')) || list->type == 'U')
+		{
+			u_num = va_arg(arg, unsigned long);
+			*out = ft_itoa_long(&u_num, 'u');
+		}
+		else if (list->type == 'u' && list->typemod == '\0')
+		{
+			u_num = va_arg(arg, unsigned);
+			*out = ft_itoa_long(&u_num, 'u');
+		}
+		else
+			check_type2(list, arg, out, &s_num);
+	}
+	if (s_num < 0)
+		delete_minus(out);
+	return (s_num < 0 ? -1 : 1);
+}
+
+int		processing_number(t_print *list, va_list arg)
 {
 	char	*out;
 	char	*prefix;

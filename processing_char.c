@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 15:25:18 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/05/01 16:39:11 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/05/03 19:31:58 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,17 @@ int			processing_percent(t_print *list)
 	char	*out;
 	char	*str;
 	int		len;
+	char	c;
 
+	c = ' ';
 	len = 1;
 	str = ft_strnew(1);
 	str[0] = '%';
+	if (list->zero)
+		c = '0';
 	if ((list->width) && (list->width > len))
 	{
-		if (!(list->out = proc_width(list, str, len, ' ')))
+		if (!(list->out = proc_width(list, str, len, c)))
 			return (-1);
 	}
 	else

@@ -1,36 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   del_minus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/03 18:30:55 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/05/03 19:50:40 by ahonchar         ###   ########.fr       */
+/*   Created: 2018/05/03 14:24:10 by ahonchar          #+#    #+#             */
+/*   Updated: 2018/05/03 14:24:22 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <string.h>
+#include "header.h"
 
-int		ft_printf(const char *format, ...);
-
-int		main(void)
+void		delete_minus(char **src)
 {
-	int i;
-	char *str1 = "              ";
-	char *str2 = "              ";
-	char c;
+	char	*new;
+	char	*temp;
+	int		i;
 
-	if ((c = strcmp(str1, str2)))
-		printf("%c\n", c);
-	else
-		printf("equal\n");
+	temp = *src;
+	new = (char *)malloc(ft_strlen(*src));
 	i = 0;
-	i = printf("{%*d}", 0, 0);
-	printf("\ni: %d\n", i);
-	i = 0;
-	i = ft_printf("{%*d}", 0, 0);
-	printf("\ni: %d\n", i);
-	return (0);
+	while (**src)
+	{
+		if (**src == '-')
+		{
+			++(*src);
+			continue;
+		}
+		new[i++] = **src;
+		++(*src);
+	}
+	new[i] = '\0';
+	free(temp);
+	*src = new;
 }
