@@ -84,7 +84,7 @@ static int			copytolist(char **str, t_print *list)
 	return (0);
 }
 
-t_print				*parse_format(char *format, va_list arg)
+t_print				*parse_format(char *format)
 {
 	t_print		*new;
 	t_print		*head;
@@ -103,7 +103,7 @@ t_print				*parse_format(char *format, va_list arg)
 		}
 		if (format && *format)
 		{
-			parse_percent(&format, new, arg);
+			parse_percent(&format, new);
 			if (!*format)
 				break ;
 			new->next = init_list();

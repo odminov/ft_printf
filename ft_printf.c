@@ -15,7 +15,7 @@
 
 static int			processing_format_part1(t_print *list, va_list arg)
 {
-	if (list->type == '%' && processing_percent(list) != 1)
+	if (list->type == '%' && processing_percent(list, arg) != 1)
 		return (-1);
 	else if (list->type == 's' && processing_string(list, arg) != 1)
 		return (-1);
@@ -85,7 +85,7 @@ static ssize_t		parse_and_print(char *format, va_list arg)
 
 	if (!ft_strcmp(format, "%"))
 		return (0);
-	if (!(list = parse_format(format, arg)))
+	if (!(list = parse_format(format)))
 		return (-1);
 	temp = list;
 	ret = 0;

@@ -6,18 +6,18 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 16:04:04 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/05/01 16:26:21 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/05/03 13:56:46 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-static void		zero_flag(t_print *list, char **temp, char *out, char *prefix)
+static void		zero_flag(t_print *list, char **temp, char **out, char *prefix)
 {
 	list->add = (int)ft_strlen(prefix);
-	*temp = proc_width(list, out, (int)ft_strlen(out), '0');
-	free(out);
-	out = ft_strjoin(prefix, *temp);
+	*temp = proc_width(list, *out, (int)ft_strlen(*out), '0');
+	free(*out);
+	*out = ft_strjoin(prefix, *temp);
 	free(*temp);
 }
 
@@ -29,7 +29,7 @@ static char		*int_without_precision(t_print *list, char *out, char *prefix)
 	{
 		if (list->zero)
 		{
-			zero_flag(list, &temp, out, prefix);
+			zero_flag(list, &temp, &out, prefix);
 			return (out);
 		}
 		temp = out;

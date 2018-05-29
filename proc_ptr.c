@@ -12,6 +12,23 @@
 
 #include "header.h"
 
+void	star(t_print *list, va_list arg)
+{
+	if (list->width == -1)
+	{
+		if ((list->width = va_arg(arg, int)) < 0)
+		{
+			list->width = list->width * -1;
+			list->align = 1;
+		}
+	}
+	if (list->precision == -1)
+	{
+		if ((list->precision = va_arg(arg, int)) < 0)
+			list->set_precision = 0;
+	}
+}
+
 int		processing_ptr(t_print *list, va_list arg)
 {
 	char			*out;
@@ -19,6 +36,7 @@ int		processing_ptr(t_print *list, va_list arg)
 	char			*prefix;
 	int				prefsize;
 
+	star(list, arg);
 	value = va_arg(arg, void *);
 	out = ft_itoa_base((unsigned long)value, 16, 0);
 	prefsize = 2;

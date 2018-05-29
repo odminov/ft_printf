@@ -6,31 +6,40 @@
 #    By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/16 13:24:05 by ahonchar          #+#    #+#              #
-#    Updated: 2018/05/01 16:37:46 by ahonchar         ###   ########.fr        #
+#    Updated: 2018/05/08 12:20:31 by ahonchar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
+
 FLAGS = -Wextra -Wall -Werror
-SRC = ft_printf.c parse_percent.c parse_format.c valid.c processing_string.c my_ret.c process_int_precision.c processing_char.c proc_int.c proc_base.c ft_itoa_base.c proc_ptr.c ft_atoi.c ft_isdigit.c ft_memset.c ft_strchr.c ft_strcpy.c ft_strlen.c ft_strncpy.c ft_strnew.c ft_strjoin.c ft_itoa_long.c ft_itoa.c ft_strrev.c ft_strcmp.c ft_strclr.c
-OBJ = ft_printf.o parse_percent.o parse_format.o valid.o processing_string.o my_ret.o process_int_precision.o processing_char.o proc_int.o proc_base.o ft_itoa_base.o proc_ptr.o ft_atoi.o ft_isdigit.o ft_memset.o ft_strchr.o ft_strcpy.o ft_strlen.o ft_strncpy.o ft_strnew.o ft_strjoin.o ft_itoa_long.o ft_itoa.o ft_strrev.o ft_strcmp.o ft_strclr.o
+
+HEADERS = ft_printf.h header.h
+
+SRC = ft_printf.c parse_percent.c parse_format.c valid.c del_minus.c processing_string.c my_ret.c process_int_precision.c processing_char.c proc_int.c proc_base.c ft_itoa_base.c proc_ptr.c ft_atoi.c ft_isdigit.c ft_memset.c ft_strchr.c ft_strcpy.c ft_strlen.c ft_strncpy.c ft_strnew.c ft_strjoin.c ft_itoa_long.c ft_strrev.c ft_strcmp.c ft_strclr.c
+
+DIR_OBJ = obj/
+
+OBJ = $(addprefix $(DIR_OBJ), $(SRC:.c=.o))
+
 NAME = libftprintf.a
 
-%.o:%.c
-	$(CC) $(FLAGS) -c $^
+$(DIR_OBJ)%.o:%.c $(HEADERS)
+	$(CC) $(FLAGS) -c $< -o $@
 
-All:$(NAME)
+all:$(NAME)
 
-$(NAME):$(OBJ)
+$(NAME): $(DIR_OBJ) $(OBJ)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 
+$(DIR_OBJ):
+	@mkdir $(DIR_OBJ)
+
 clean:
-	rm -rf *~
-	rm -rf $(OBJ)
+	rm -rf $(DIR_OBJ)
 
 fclean: clean
 	rm -rf $(NAME)
 
-re: fclean All
-
+re: fclean all

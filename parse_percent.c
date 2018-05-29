@@ -49,7 +49,7 @@ static void		parse_mods(t_print *list, char **str)
 	}
 }
 
-static void		parse_width(t_print *list, char **str, va_list arg)
+static void		parse_width(t_print *list, char **str)
 {
 	int		i;
 	char	width[11];
@@ -64,17 +64,13 @@ static void		parse_width(t_print *list, char **str, va_list arg)
 	width[i] = '\0';
 	if (**str == '*' && ++(*str))
 	{
-		if ((list->width = va_arg(arg, int)) < 0)
-		{
-			list->width = list->width * -1;
-			list->align = 1;
-		}
+		list->width = -1;
 	}
 	else
 		list->width = ft_atoi(width);
 }
 
-static void		parse_pecision(t_print *list, char **str, va_list arg)
+static void		parse_pecision(t_print *list, char **str)
 {
 	char	precision[11];
 	int		i;
@@ -93,14 +89,13 @@ static void		parse_pecision(t_print *list, char **str, va_list arg)
 	precision[i] = '\0';
 	if (**str == '*' && ++(*str))
 	{
-		if ((list->precision = va_arg(arg, int)) < 0)
-			list->set_precision = 0;
+		list->precision = -1;
 	}
 	else
 		list->precision = ft_atoi(precision);
 }
 
-void			parse_percent(char **str, t_print *list, va_list arg)
+void			parse_percent(char **str, t_print *list)
 {
 	while (**str && (!contains(TYPES, **str)))
 	{
@@ -109,9 +104,9 @@ void			parse_percent(char **str, t_print *list, va_list arg)
 		else if (contains(MODS, **str))
 			parse_mods(list, str);
 		else if (ft_isdigit(**str) || **str == '*')
-			parse_width(list, str, arg);
+			parse_width(list, str);
 		else if (**str == '.')
-			parse_pecision(list, str, arg);
+			parse_pecision(list, str);
 		else
 			++(*str);
 	}

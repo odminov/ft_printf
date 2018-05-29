@@ -123,6 +123,7 @@ int			processing_string(t_print *list, va_list arg)
 	char		err_11[7];
 	unsigned	*unicode;
 
+	star(list, arg);
 	ft_strcpy(err_11, "(null)");
 	if (list->type == 'S' || (list->type == 's' && list->typemod == 'l'))
 	{

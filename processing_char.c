@@ -6,7 +6,7 @@
 /*   By: ahonchar <ahonchar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 15:25:18 by ahonchar          #+#    #+#             */
-/*   Updated: 2018/05/01 16:39:11 by ahonchar         ###   ########.fr       */
+/*   Updated: 2018/05/03 19:31:58 by ahonchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int			processing_char(t_print *list, va_list arg)
 	char		*str;
 	int			len;
 
+	star(list, arg);
 	str = ft_strnew(4);
 	list->zero = 0;
 	if (check_unicode(list, arg, str) < 0)
@@ -65,18 +66,23 @@ int			processing_char(t_print *list, va_list arg)
 	return (1);
 }
 
-int			processing_percent(t_print *list)
+int			processing_percent(t_print *list, va_list arg)
 {
 	char	*out;
 	char	*str;
 	int		len;
+	char	c;
 
+	star(list, arg);
+	c = ' ';
 	len = 1;
 	str = ft_strnew(1);
 	str[0] = '%';
+	if (list->zero)
+		c = '0';
 	if ((list->width) && (list->width > len))
 	{
-		if (!(list->out = proc_width(list, str, len, ' ')))
+		if (!(list->out = proc_width(list, str, len, c)))
 			return (-1);
 	}
 	else
